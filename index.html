@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎡 LuckySpin Ultra - Loterie Premium Magique ✨</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎡</text></svg>">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="light">
+    <!-- Navigation Ultra Moderne -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary glass-effect">
+        <div class="container">
+            <a class="navbar-brand magic-text" href="#">
+                <span class="emoji-spin">🎡</span> LuckySpin <span class="sparkle">✨</span> Ultra
+            </a>
+            <div class="d-flex align-items-center">
+                <!-- Statistiques en temps réel -->
+                <div class="stats-display me-3">
+                    <span class="stat-item">
+                        <i class="fas fa-users text-warning"></i>
+                        <span id="liveParticipantCount">0</span>
+                    </span>
+                    <span class="stat-item">
+                        <i class="fas fa-trophy text-success"></i>
+                        <span id="liveWinnerCount">0</span>
+                    </span>
+                </div>
+                
+                <!-- Sélecteur de thème avancé -->
+                <div class="theme-switcher me-3">
+                    <div class="dropdown">
+                        <button class="btn btn-sm btn-outline-light dropdown-toggle" id="themeDropdown" data-bs-toggle="dropdown">
+                            <i class="fas fa-palette"></i>
+                    </button>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="#" data-theme="light">🌞 Mode Clair</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="dark">🌙 Mode Sombre</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="party">🎉 Mode Fête</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="casino">🎰 Mode Casino</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="neon">💫 Mode Neon</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="rainbow">🌈 Mode Arc-en-ciel</a></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Boutons d'action -->
+                <button class="btn btn-outline-light me-2" id="helpBtn" title="Aide">
+                    <i class="fas fa-question-circle"></i>
+                </button>
+                <button class="btn btn-outline-light me-2" id="statsBtn" title="Statistiques">
+                    <i class="fas fa-chart-bar"></i>
+                </button>
+                <button class="btn btn-outline-light" id="settingsBtn" title="Paramètres">
+                    <i class="fas fa-cog"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row">
+            <!-- Left Panel - Participants Ultra -->
+            <div class="col-lg-4">
+                <div class="card shadow-lg mb-4 glass-card">
+                    <div class="card-header bg-gradient-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <span class="emoji-bounce">👥</span> Participants <span class="pulse-dot"></span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Formulaire d'ajout amélioré -->
+                        <form id="addParticipantForm" class="mb-3">
+                            <div class="input-group">
+                                <textarea class="form-control magic-input" id="participantName" 
+                                          placeholder="🎯 Entrez un ou plusieurs participants...&#10;Séparés par des virgules, tirets ou retours à la ligne&#10;Exemple: Alice, Bob - Charlie&#10;Diana&#10;Eve" 
+                                          rows="3" style="resize: vertical;" required></textarea>
+                                <button class="btn btn-primary magic-btn" type="submit">
+                                    <i class="fas fa-plus"></i> <span class="d-none d-sm-inline">Ajouter</span>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Actions rapides -->
+                        <div class="d-grid gap-2 mb-3">
+                            <button class="btn btn-outline-primary magic-btn" id="importCsvBtn">
+                                <i class="fas fa-file-import me-2"></i>📁 Importer CSV
+                            </button>
+                            <button class="btn btn-outline-success magic-btn" id="addRandomBtn">
+                                <i class="fas fa-random me-2"></i>🎲 Ajouter Aléatoire
+                            </button>
+                            <button class="btn btn-outline-warning magic-btn" id="shuffleBtn">
+                                <i class="fas fa-shuffle me-2"></i>🔀 Mélanger
+                            </button>
+                            <input type="file" id="csvFileInput" accept=".csv" class="d-none">
+                        </div>
+
+                        <!-- Liste des participants avec recherche -->
+                        <div class="participants-list-container">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h6><span class="emoji">📋</span> Liste des participants</h6>
+                                <span class="badge bg-primary rounded-pill pulse" id="participantCount">0</span>
+                            </div>
+                            
+                            <!-- Barre de recherche -->
+                            <div class="mb-3">
+                                <input type="text" class="form-control magic-input" id="searchParticipants" 
+                                       placeholder="🔍 Rechercher un participant...">
+                            </div>
+                            
+                            <div id="participantsList" class="list-group magic-list"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Historique des gagnants ultra -->
+                <div class="card shadow-lg glass-card">
+                    <div class="card-header bg-gradient-info text-white">
+                        <h5 class="card-title mb-0">
+                            <span class="emoji-bounce">🏆</span> Hall of Fame <span class="sparkle">✨</span>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="winnersList" class="list-group magic-list"></div>
+                        <div class="d-grid gap-2 mt-3">
+                            <button class="btn btn-outline-info magic-btn" id="exportResultsBtn">
+                                <i class="fas fa-download me-2"></i>📊 Exporter les résultats
+                            </button>
+                            <button class="btn btn-outline-success magic-btn" id="shareResultsBtn">
+                                <i class="fas fa-share-alt me-2"></i>📤 Partager
+                            </button>
+                            <button class="btn btn-outline-warning magic-btn" id="qrCodeBtn">
+                                <i class="fas fa-qrcode me-2"></i>📱 QR Code
+                            </button>
+                            <button class="btn btn-outline-warning magic-btn" id="clearHistoryBtn">
+                                <i class="fas fa-trash me-2"></i>🗑️ Effacer l'historique
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Panel - Roulette Ultra -->
+            <div class="col-lg-8">
+                <div class="card shadow-lg mb-4 glass-card">
+                    <div class="card-header bg-gradient-success text-white text-center">
+                        <h4 class="card-title mb-0">
+                            <span class="emoji-spin">🎡</span> Roulette Magique <span class="sparkle">✨</span>
+                        </h4>
+                    </div>
+                    <div class="card-body text-center">
+                        <!-- Roulette avec effets visuels -->
+                        <div class="roulette-container mb-4 position-relative">
+                            <div class="roulette-glow"></div>
+                            <canvas id="rouletteCanvas" width="400" height="400"></canvas>
+                            <div class="roulette-pointer magic-pointer"></div>
+                            <div class="roulette-sparkles">
+                                <div class="sparkle sparkle-1">✨</div>
+                                <div class="sparkle sparkle-2">⭐</div>
+                                <div class="sparkle sparkle-3">💫</div>
+                                <div class="sparkle sparkle-4">🌟</div>
+                            </div>
+                        </div>
+
+                        <!-- Contrôles de la roulette -->
+                        <div class="d-grid gap-2 col-md-8 mx-auto">
+                            <button class="btn btn-success btn-lg magic-btn pulse-btn" id="spinButton" disabled>
+                                <i class="fas fa-play-circle me-2"></i>🚀 Lancer la Magie !
+                            </button>
+                            <div class="row">
+                                <div class="col-6">
+                                    <button class="btn btn-outline-danger magic-btn" id="resetButton">
+                                        <i class="fas fa-redo me-2"></i>🔄 Reset
+                                    </button>
+                                </div>
+                                <div class="col-6">
+                                    <button class="btn btn-outline-warning magic-btn" id="autoSpinBtn">
+                                        <i class="fas fa-magic me-2"></i>🎲 Auto-Spin
+                            </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Indicateur de statut -->
+                        <div class="mt-3">
+                            <div id="spinStatus" class="status-indicator">
+                                <span class="emoji">⏳</span> Prêt à tourner !
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paramètres Ultra -->
+                <div class="card shadow-lg glass-card">
+                    <div class="card-header bg-gradient-warning text-white">
+                        <h5 class="card-title mb-0">
+                            <span class="emoji-bounce">⚙️</span> Centre de Contrôle Magique
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Section Audio & Effets -->
+                        <div class="settings-section">
+                            <h6 class="mb-3">
+                                <span class="settings-emoji">🎵</span> Audio & Effets
+                            </h6>
+                            
+                            <div class="form-check form-switch">
+                                <input class="form-check-input magic-switch" type="checkbox" id="soundToggle" checked>
+                                <label class="form-check-label" for="soundToggle">
+                                    <span class="emoji">🔊</span> Sons Magiques
+                                    <div class="settings-description">Active les effets sonores</div>
+                                </label>
+                            </div>
+                            
+                            <div class="form-check form-switch">
+                                <input class="form-check-input magic-switch" type="checkbox" id="animationsToggle" checked>
+                                <label class="form-check-label" for="animationsToggle">
+                                    <span class="emoji">✨</span> Animations
+                                    <div class="settings-description">Effets visuels fluides</div>
+                                </label>
+                            </div>
+                            
+                            <div class="form-check form-switch">
+                                <input class="form-check-input magic-switch" type="checkbox" id="confettiToggle" checked>
+                                <label class="form-check-label" for="confettiToggle">
+                                    <span class="emoji">🎊</span> Confettis
+                                    <div class="settings-description">Célébration des victoires</div>
+                                </label>
+                            </div>
+                            
+                            <div class="form-check form-switch">
+                                <input class="form-check-input magic-switch" type="checkbox" id="hapticToggle">
+                                <label class="form-check-label" for="hapticToggle">
+                                    <span class="emoji">📳</span> Vibrations
+                                    <div class="settings-description">Feedback tactile (mobile)</div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Section Performance -->
+                        <div class="settings-section">
+                            <h6 class="mb-3">
+                                <span class="settings-emoji">⚡</span> Performance
+                            </h6>
+                            
+                            <div class="settings-item">
+                                <div class="settings-label">
+                                    <span class="emoji">🎡</span> Vitesse de rotation
+                                    <div class="settings-description">Contrôle la rapidité du spin</div>
+                                </div>
+                                <div class="settings-control">
+                                    <input type="range" class="form-range magic-slider" id="rotationSpeed" min="1" max="10" value="5">
+                                    <span class="settings-value" id="rotationSpeedValue">5</span>
+                                </div>
+                            </div>
+                            
+                            <div class="settings-item">
+                                <div class="settings-label">
+                                    <span class="emoji">⏱️</span> Durée du spin
+                                    <div class="settings-description">Temps d'animation en secondes</div>
+                                </div>
+                                <div class="settings-control">
+                                    <input type="range" class="form-range magic-slider" id="spinDuration" min="2" max="8" value="4">
+                                    <span class="settings-value" id="spinDurationValue">4s</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Effets visuels -->
+    <canvas id="confettiCanvas" class="fixed-top" style="pointer-events: none;"></canvas>
+    <canvas id="particlesCanvas" class="fixed-top" style="pointer-events: none;"></canvas>
+    
+    <!-- Particules flottantes -->
+    <div class="floating-particles">
+        <div class="particle particle-1">✨</div>
+        <div class="particle particle-2">⭐</div>
+        <div class="particle particle-3">💫</div>
+        <div class="particle particle-4">🌟</div>
+        <div class="particle particle-5">🎆</div>
+        <div class="particle particle-6">🎇</div>
+    </div>
+
+    <!-- Modal Statistiques -->
+    <div class="modal fade" id="statsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content glass-card">
+                <div class="modal-header bg-gradient-info text-white">
+                    <h5 class="modal-title">
+                        <span class="emoji-bounce">📊</span> Statistiques Magiques
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="stat-card">
+                                <h6><span class="emoji">👥</span> Participants</h6>
+                                <div class="stat-number" id="totalParticipants">0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stat-card">
+                                <h6><span class="emoji">🏆</span> Gagnants</h6>
+                                <div class="stat-number" id="totalWinners">0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stat-card">
+                                <h6><span class="emoji">🎯</span> Spins Totaux</h6>
+                                <div class="stat-number" id="totalSpins">0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="stat-card">
+                                <h6><span class="emoji">⏱️</span> Temps Moyen</h6>
+                                <div class="stat-number" id="avgSpinTime">0s</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h6><span class="emoji">📈</span> Graphique des Gagnants</h6>
+                        <canvas id="winnersChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Paramètres Avancés -->
+    <div class="modal fade" id="settingsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content glass-card">
+                <div class="modal-header bg-gradient-warning text-white">
+                    <h5 class="modal-title">
+                        <span class="emoji-bounce">⚙️</span> Paramètres Avancés
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6><span class="emoji">🎨</span> Personnalisation</h6>
+                            <div class="mb-3">
+                                <label class="form-label">Couleur de la roulette</label>
+                                <input type="color" class="form-control form-control-color" id="rouletteColor" value="#4e54c8">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Taille de la roulette</label>
+                                <input type="range" class="form-range" id="rouletteSize" min="300" max="500" value="400">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <h6><span class="emoji">🔊</span> Audio</h6>
+                            <div class="mb-3">
+                                <label class="form-label">Volume général</label>
+                                <input type="range" class="form-range" id="masterVolume" min="0" max="100" value="70">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Volume des effets</label>
+                                <input type="range" class="form-range" id="effectsVolume" min="0" max="100" value="80">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal QR Code -->
+    <div class="modal fade" id="qrCodeModal" tabindex="-1">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content glass-card">
+                <div class="modal-header bg-gradient-success text-white">
+                    <h5 class="modal-title">
+                        <span class="emoji-bounce">📤</span> Partager les résultats
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="qrcode" class="mb-3"></div>
+                    <p><span class="emoji">📱</span> Scannez ce QR code pour partager les résultats</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts Ultra -->
+    <!-- Footer -->
+    <footer class="footer mt-5 py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="footer-content">
+                        <h6 class="footer-title">
+                            <span class="emoji-bounce">🎡</span> LuckySpin Ultra
+                        </h6>
+                        <p class="footer-description">
+                            La roulette magique ultime pour tous vos tirages au sort ! ✨
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <div class="footer-signature">
+                        <p class="mb-0">
+                            <span class="signature-text">Créé avec ❤️ par</span>
+                            <span class="signature-name">DIOX🚀🩻</span>
+                            <span class="signature-emoji">🕸️</span>
+                        </p>
+                        <small class="signature-version">Version 2.0 Ultra</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- QR Code Modal -->
+    <div class="modal fade" id="qrCodeModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-card">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <span class="emoji-bounce">📱</span> QR Code de Partage
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div id="qrCodeContainer" class="qr-container">
+                        <canvas id="qrCodeCanvas" width="200" height="200"></canvas>
+                    </div>
+                    <p class="mt-3 mb-0">
+                        <small class="text-muted">
+                            Scannez ce QR code pour accéder à votre roulette magique ! ✨
+                        </small>
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-2"></i>Fermer
+                    </button>
+                    <button type="button" class="btn btn-primary" id="downloadQRBtn">
+                        <i class="fas fa-download me-2"></i>Télécharger
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/howler@2.2.3/dist/howler.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
